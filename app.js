@@ -1,6 +1,7 @@
 // console.log(process.argv); // to print command line arguments
 
 const yargs = require("yargs");
+const {addNote} = require("./notes");
 
 yargs.command({  // add command
     command: "add",
@@ -18,7 +19,7 @@ yargs.command({  // add command
         }   
     },
     handler: function(argv) {
-        console.log("adding a note, ",argv);
+        addNote(argv.title,argv.body);
     }
 });
 
