@@ -15,10 +15,33 @@ const addNote = function (title,body) {
         console.log("Allocating new storage location...");
     }
     notes.push(note);
-    saveNote();
+    console.log(chalk.green.bold("Successfully added note!"));
+    saveNotes();
 }
 
-const saveNote = function () {
+const removeNote = function(title) {
+    if(title == "") {
+        console.log(chalk.red.bold("! ") + chalk.gray.bold(" Cannot remove a note with empty title"));
+        return;
+    }
+    try {
+        notes = readNotes();
+        let length = notes.length;
+        notes = notes.filter((note) => note.title != title);
+        console.log(notes);
+        if(length == notes.length) {
+            console.log(chalk.red.bold("! ") + chalk.gray.bold(` There is no note with title ${title}`));
+            return;
+        }
+    } catch(err) {
+        console.log(chalk.red.bold("! ") + chalk.gray.bold(" You haven't added any notes"));
+        return;
+    }
+    console.log(chalk.green.bold("Successfully removed note!"));
+    saveNotes();
+}
+
+const saveNotes = function () {
     notesJSON = JSON.stringify(notes);
     fs.writeFileSync("notes.json",notesJSON);
 }
@@ -29,5 +52,6 @@ const readNotes = function () {
 }
 
 module.exports = {
-    addNote
+    addNote,
+    removeNote
 }

@@ -1,7 +1,7 @@
 // console.log(process.argv); // to print command line arguments
 
 const yargs = require("yargs");
-const {addNote} = require("./notes");
+const { addNote, removeNote } = require("./notes");
 
 yargs.command({  // add command
     command: "add",
@@ -26,8 +26,15 @@ yargs.command({  // add command
 yargs.command({  // remove command
     command: "remove",
     describe: "Remove a note",
-    handler: function() {
-        console.log("removing a note")
+    builder: {
+        title: {
+            describe: "Title of the note",
+            demandOption: true,
+            type: "string"
+        }
+    },
+    handler: function(argv) {
+        removeNote(argv.title);
     }
 });
 
