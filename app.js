@@ -1,7 +1,7 @@
 // console.log(process.argv); // to print command line arguments
 
 const yargs = require("yargs");
-const { addNote, removeNote } = require("./notes");
+const { addNote, removeNote, listNotes, readNote } = require("./notes");
 
 yargs.command({  // add command
     command: "add",
@@ -18,7 +18,7 @@ yargs.command({  // add command
             type: "string"
         }   
     },
-    handler: function(argv) {
+    handler(argv) {  // similar to handler: function() {}
         addNote(argv.title,argv.body);
     }
 });
@@ -33,7 +33,7 @@ yargs.command({  // remove command
             type: "string"
         }
     },
-    handler: function(argv) {
+    handler(argv) {
         removeNote(argv.title);
     }
 });
@@ -41,16 +41,23 @@ yargs.command({  // remove command
 yargs.command({  // list command
     command: "list",
     describe: "List your notes",
-    handler: function() {
-        console.log("listing notes")
+    handler() {
+        listNotes();
     }
 });
 
 yargs.command({  // read command
     command: "read",
     describe: "Read a note",
-    handler: function() {
-        console.log("reading a note")
+    builder: {
+        title: {
+            describe: "Title of the note",
+            demandOption: true,
+            type: "string"
+        }
+    },
+    handler(argv) {
+        readNote(argv.title);
     }
 });
 
